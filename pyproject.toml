@@ -13,6 +13,10 @@ boto3 = "^1.21.7"
 loguru = "^0.7.2"
 sendgrid = "^6.11.0"
 
+# Create dependency for test
+[tool.poetry.dev-dependencies]
+pytest = "^6.2.5"
+
 
 [build-system]
 requires = ["poetry-core"]
