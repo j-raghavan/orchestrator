@@ -1,0 +1,19 @@
+[tool.poetry]
+name = "orchestrator"
+version = "0.1.0"
+description = ""
+authors = ["Jayasimha Raghavan <mr.jayasimha@gmail.com>"]
+license = "MIT"
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.12"
+prefect = "^2.19.7"
+boto3 = "^1.21.7"
+loguru = "^0.7.2"
+sendgrid = "^6.11.0"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
