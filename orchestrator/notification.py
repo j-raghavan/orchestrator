@@ -156,10 +156,12 @@ class SMTPClient:
         response = sg.send(message)
         if response.status_code >= 300:
             logger.error(
-                f"Failed to send email via SendGrid: {response.status_code}, {response.body}"
+                f"Failed to send email via SendGrid: "
+                f"{response.status_code}, {response.body}"
             )
             raise Exception(
-                f"Failed to send email via SendGrid: {response.status_code}, {response.body}"
+                f"Failed to send email via SendGrid: "
+                f"{response.status_code}, {response.body}"
             )
         logger.info(f"Email sent via SendGrid: {response.status_code}")
 

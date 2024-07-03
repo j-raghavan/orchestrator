@@ -36,7 +36,6 @@ class TestSMTPClient(unittest.TestCase):
         mock_client.send_raw_email.assert_called_once()
         self.assertTrue(mock_client.send_raw_email.called)
 
-
     @patch("orchestrator.notification.SendGridAPIClient")
     def test_send_via_sendgrid(self, mock_sendgrid_client):
         mock_client = MagicMock()
