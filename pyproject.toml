@@ -22,14 +22,10 @@ black = "^24.4.2"
 python-semantic-release = "^9.8.4"
 
 [tool.semantic_release]
-version_variable = ["orchestrator/__init__.py:__version__"]
-version_source = "tag"
-branch = "main"
-upload_to_pypi = true
-repository = "pypi"
-commit_parser = "semantic_release.history.parser_angular_parser"
-tag_format = "v{version}"
-major_on_zero = true
+version_toml = [
+  "pyproject.toml:tool.poetry.version"
+]
+build_command = "pip install poetry && poetry install && poetry build"
 
 
 [build-system]
