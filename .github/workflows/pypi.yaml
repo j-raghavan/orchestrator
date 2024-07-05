@@ -10,10 +10,15 @@ jobs:
   release:
     name: Release
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      issues: write
+      pull-requests: write
     steps:
     - uses: actions/checkout@v3
       with:
         fetch-depth: 0
+        token: ${{ secrets.GITHUB_TOKEN }}
 
     - name: Set up Python
       uses: actions/setup-python@v4
@@ -30,21 +35,12 @@ jobs:
       run: |
         poetry config virtualenvs.create false
 
-    - name: Initialize version if needed
-      run: |
-        if ! git tag | grep -q "^v"; then
-          git config --global user.name "github-actions"
-          git config --global user.email "github-actions@github.com"
-          git tag v0.1.0
-          git push --tags
-        fi
-
     - name: Semantic Release
       env:
         GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       run: |
-        git config --global user.name "github-actions"
-        git config --global user.email "github-actions@github.com"
+        git config --global user.name "github-actions[bot]"
+        git config --global user.email "github-actions[bot]@users.noreply.github.com"
         semantic-release publish
 
     - name: Build package
