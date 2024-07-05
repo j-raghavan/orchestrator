@@ -1,0 +1,125 @@
+# DISCLAIMER: 
+#   ___ _ _ __| |_  ___ __| |_ _ _ __ _| |_ ___ _ _ 
+#  / _ \ '_/ _| ' \/ -_|_-<  _| '_/ _` |  _/ _ \ '_|
+#  \___/_| \__|_||_\___/__/\__|_| \__,_|\__\___/_|  
+# 
+# THIS ORCHESTRATOR.YAML FILE IS PROVIDED AS A TEMPLATE AND EXAMPLE 
+# CONFIGURATION FILE. IT IS INTENDED TO DEMONSTRATE THE STRUCTURE AND 
+# SYNTAX OF A TYPICAL ORCHESTRATOR.YAML FILE. 
+# 
+# PLEASE NOTE THAT THIS FILE MAY NOT BE SUITABLE FOR DIRECT USE IN 
+# YOUR SPECIFIC SYSTEM OR APPLICATION. YOU SHOULD CAREFULLY REVIEW 
+# AND MODIFY THE CONFIGURATION SETTINGS TO MEET THE REQUIREMENTS OF 
+# YOUR SYSTEM. 
+# 
+# ADDITIONALLY, IT IS IMPORTANT TO THOROUGHLY TEST AND VALIDATE THE 
+# BEHAVIOR OF THE ORCHESTRATOR AFTER MAKING ANY CHANGES TO THIS FILE. 
+# IMPROPER CONFIGURATION SETTINGS MAY LEAD TO UNEXPECTED BEHAVIOR OR 
+# SYSTEM FAILURES. 
+# 
+# THE AUTHORS AND CONTRIBUTORS OF THIS SOFTWARE ARE NOT RESPONSIBLE FOR 
+# ANY ISSUES OR DAMAGES THAT MAY ARISE FROM THE USE OF THIS SOFTWARE. 
+# USE IT AT YOUR OWN RISK AND DISCRETION. 
+#
+# Description:
+# The orchestrator.yaml file is a configuration file that plays 
+# a crucial role in orchestrating various components of a system or 
+# application. It serves as a central hub for defining and managing 
+# the behavior and interactions of these components.
+#
+# In this file, you can specify the configuration settings and 
+# parameters that control how the orchestrator operates. These 
+# settings can include things like defining the order in which 
+# tasks are executed, specifying dependencies between tasks, 
+# configuring error handling and retries, and much more.
+#
+# By modifying the orchestrator.yaml file, you can fine-tune 
+# the behavior of the orchestrator to meet the specific requirements 
+# of your system or application. It provides a flexible and 
+# customizable way to control the flow and coordination of tasks, 
+# ensuring that they are executed in the desired sequence and 
+# with the necessary dependencies.
+#
+# Think of the orchestrator.yaml file as the conductor of an orchestra, 
+# directing each instrument (component) to play its part at the right 
+# time and in harmony with the others. It allows you to define the 
+# choreography of your system's processes, ensuring smooth execution 
+# and efficient coordination.
+#
+# Remember to carefully review and understand the available 
+# configuration options and their effects before making any changes 
+# to this file. It is recommended to test the orchestrator with
+# different configurations to ensure that it behaves as expected
+# and meets the requirements of your system or application. 
+# 
+
+
+notification:
+  # Text: Configure how notifications are sent for job statuses.
+  #
+  # Example: This example demonstrates how to configure notifications
+  #          using either email or Slack.
+  enabled: false
+  type: "email" # or slack
+  slack:
+    webhook: "${SLACK_WEBHOOK}" # Slack webhook URL
+  email:
+    provider: "smtp" # or sendgrid, ses
+    use_vault: false
+    vault:
+      token: "${VAULT_TOKEN}"
+      addr: "${VAULT_ADDR}"  
+    smtp:
+      host: "${SMTP_HOST}" # Example smtp.gmail.com
+      port: ${SMTP_PORT} # Example 587
+      username: "${EMAIL_USERNAME}"
+      password: "${EMAIL_PASSWORD}"
+      from: "${EMAIL_FROM}"
+      to: "${EMAIL_TO}"
+      vault_path: "${VAULT_PATH}" # Secret path in vault
+    sendgrid:
+      api_key: "${SENDGRID_API_KEY}"
+      from: "${EMAIL_FROM}"
+      to: "${EMAIL_TO}"
+      vault_path: "${VAULT_PATH}" # Secret path in vault
+    ses:
+      region: "us-west-2"
+      access_key_id: "${AWS_ACCESS_KEY_ID}"
+      secret_access_key: "${AWS_SECRET_ACCESS_KEY}"
+      role_arn: "${AWS_ROLE_ARN}"
+      from: "${EMAIL_FROM}"
+      to: "${EMAIL_TO}"
+      vault_path: "${VAULT_PATH}" # Secret path in vault
+
+
+jobs:
+  # Text: Define jobs that orchestrate tasks within your system.
+  #
+  # Example: This example defines a job named "default" with task execution
+  #          details and scheduling using cron.
+  - name: "default"
+    enabled: false
+    notify: false
+    description: "This is a sample job"
+    # needs: ["job1", "job2"] # List of jobs that need to be completed before this job
+    run:
+      # Define tasks with or without priorities 
+      # Example tasks without priorities: 
+      # - /path/to/script.sh arg1 arg2 # Path to the shell script
+      # - /path/to/script.py -arg1 value1 # Path to the python script 
+      # - echo "Hello, World!" # Command to execute
+      # Example tasks with priorities:
+      #   (Note: All P0s are run first followed by P1s and then P2s)
+      # p0: 
+      #   # - /path/to/script.sh # Path to the shell script with arguments
+      #   # - /path/to/script.sh arg1 arg2 # Path to the shell script with arguments
+      # p1: 
+      #   # - /path/to/script.py # Path to the python script with arguments
+      #   # - /path/to/script.py arg1 arg2 # Path to the python script with arguments
+      # p2:
+      #   # - echo "Hello, World!" # Command to execute
+      #   # - echo "Hello, World!" && echo "Goodbye, World!" # Command to execute
+    schedule:
+      cron: "0 0 * * *" # Cron expression
+      timezone: "UTC" # Timezone
+    retries: 3 # Number of retries
