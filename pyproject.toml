@@ -1,5 +1,5 @@
 [tool.poetry]
-name = "orchestrator"
+name = "porchestrator"
 version = "0.1.0"
 description = ""
 authors = ["Jayasimha Raghavan <mr.jayasimha@gmail.com>"]
@@ -20,7 +20,13 @@ pytest = "^6.2.5"
 flake8 = "^7.1.0"
 black = "^24.4.2"
 
+[tool.poetry.group.dev.dependencies]
+python-semantic-release = "^9.8.4"
 
+[tool.semantic_release]
+version_variable = "orchestrator/__init__.py:__version__"
+branch = "main"
+upload_to_pypi = false
 
 [build-system]
 requires = ["poetry-core"]
