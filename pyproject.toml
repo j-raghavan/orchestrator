@@ -25,8 +25,10 @@ python-semantic-release = "^9.8.4"
 
 [tool.semantic_release]
 version_variable = "orchestrator/__init__.py:__version__"
+version_toml = "pyproject.toml:tool.poetry.version"
 branch = "main"
 upload_to_pypi = false
+tag_format = "v{version}"
 
 [build-system]
 requires = ["poetry-core"]

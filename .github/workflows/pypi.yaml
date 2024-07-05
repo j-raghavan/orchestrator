@@ -30,6 +30,15 @@ jobs:
       run: |
         poetry config virtualenvs.create false
 
+    - name: Initialize version if needed
+      run: |
+        if ! git tag | grep -q "^v"; then
+          git config --global user.name "github-actions"
+          git config --global user.email "github-actions@github.com"
+          git tag v0.1.0
+          git push --tags
+        fi
+
     - name: Semantic Release
       env:
         GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
