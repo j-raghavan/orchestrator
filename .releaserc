@@ -1,0 +1,10 @@
+{
+  "version_source": "poetry",
+  "version_toml": "pyproject.toml:tool.poetry.version",
+  "changelog_file": "CHANGELOG.md",
+  "commit_parser": {
+    "pattern": "^(?P<level>build|chore|ci|docs|feat|fix|perf|refactor|style|test|BREAKING CHANGE)(\\((?P<scope>[^)]+)\\))?!?: (?P<subject>.*)$",
+    "minor_levels": ["feat", "fix"],
+    "major_levels": ["BREAKING CHANGE"]
+  }
+}
