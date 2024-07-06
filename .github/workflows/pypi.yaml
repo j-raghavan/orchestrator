@@ -1,10 +1,10 @@
 name: Publish Python 🐍 distribution 📦 to PyPI
 
 on:
-  push:
-    branches:
-      - main
-  workflow_dispatch:
+  workflow_run:
+    workflows: ["Release & Publish"]
+    types:
+      - completed
 
 jobs:
   release:
@@ -50,7 +50,7 @@ jobs:
       run: echo ${{ secrets.PYPI_API_KEY }}
       env:
         PYPI_API_KEY: ${{ secrets.PYPI_API_KEY }}
-    
+
     - name: Publish to PyPI
       env:
         POETRY_PYPI_TOKEN_PYPI: ${{ secrets.PYPI_API_KEY }}
