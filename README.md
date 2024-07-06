@@ -4,13 +4,6 @@
   </a>
 </h1>
 
-<pre>
-<!-- <center>
-    ___ _ _ __| |_  ___ __| |_ _ _ __ _| |_ ___ _ _ 
-   / _ \ '_/ _| ' \/ -_|_-<  _| '_/ _` |  _/ _ \ '_|
-   \___/_| \__|_||_\___/__/\__|_| \__,_|\__\___/_|  
-</center>   -->
-</pre>
 <p align="center">
   <a href="https://opensource.org/licenses/MIT">
     <img src="https://img.shields.io/badge/License-MIT-yellow.svg" alt="License: MIT">
