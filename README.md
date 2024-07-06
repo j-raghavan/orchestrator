@@ -1,5 +1,5 @@
 <h1 align="center">
-  <img src="assets/orchestrator.png" alt="Orchestrator" width="60" height="50" style="vertical-align: middle;">
+  <img src="https://raw.githubusercontent.com/j-raghavan/porchestrator/main/assets/orchestrator.png" alt="Orchestrator" width="60" height="50" style="vertical-align: middle;">
   Orchestrator
 </h1>
 
