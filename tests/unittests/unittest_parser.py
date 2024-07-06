@@ -10,7 +10,7 @@ from orchestrator.parser import (
 class TestOrchestratorConfigParser(unittest.TestCase):
 
     def create_temp_yaml(self, content):
-        temp = tempfile.NamedTemporaryFile(mode='w+', delete=False, suffix='.yaml')
+        temp = tempfile.NamedTemporaryFile(mode="w+", delete=False, suffix=".yaml")
         temp.write(content)
         temp.close()
         return temp.name
@@ -18,11 +18,11 @@ class TestOrchestratorConfigParser(unittest.TestCase):
     def tearDown(self):
         # Clean up any temporary files
         for attr in dir(self):
-            if attr.startswith('temp_file'):
+            if attr.startswith("temp_file"):
                 os.unlink(getattr(self, attr))
 
     def test_empty_config(self):
-        self.temp_file1 = self.create_temp_yaml('')
+        self.temp_file1 = self.create_temp_yaml("")
         result = parse_orchestrator_config(self.temp_file1)
         self.assertEqual(result, {})
 
@@ -37,7 +37,7 @@ class TestOrchestratorConfigParser(unittest.TestCase):
         """
         self.temp_file2 = self.create_temp_yaml(yaml_content)
         result = parse_orchestrator_config(self.temp_file2)
-        expected = {'p0': ['task1', 'task2'], 'p1': ['task3']}
+        expected = {"p0": ["task1", "task2"], "p1": ["task3"]}
         self.assertEqual(result, expected)
 
     def test_disabled_job(self):
@@ -67,7 +67,7 @@ class TestOrchestratorConfigParser(unittest.TestCase):
         """
         self.temp_file4 = self.create_temp_yaml(yaml_content)
         result = parse_orchestrator_config(self.temp_file4)
-        expected = {'p0': ['task1'], 'p1': ['task2']}
+        expected = {"p0": ["task1"], "p1": ["task2"]}
         self.assertEqual(result, expected)
 
     def test_circular_dependencies(self):
@@ -86,11 +86,11 @@ class TestOrchestratorConfigParser(unittest.TestCase):
         """
         self.temp_file5 = self.create_temp_yaml(yaml_content)
         result = parse_orchestrator_config(self.temp_file5)
-        expected = {'p0': ['task1'], 'p1': ['task2']}
+        expected = {"p0": ["task1"], "p1": ["task2"]}
         self.assertEqual(result, expected)
 
     def test_env_var_expansion(self):
-        os.environ['TEST_VAR'] = 'expanded'
+        os.environ["TEST_VAR"] = "expanded"
         yaml_content = """
         jobs:
           - name: job1
@@ -100,7 +100,7 @@ class TestOrchestratorConfigParser(unittest.TestCase):
         """
         self.temp_file6 = self.create_temp_yaml(yaml_content)
         result = parse_orchestrator_config(self.temp_file6)
-        expected = {'p0': ['expanded']}
+        expected = {"p0": ["expanded"]}
         self.assertEqual(result, expected)
 
     def test_multiple_priorities(self):
@@ -115,20 +115,26 @@ class TestOrchestratorConfigParser(unittest.TestCase):
         """
         self.temp_file7 = self.create_temp_yaml(yaml_content)
         result = parse_orchestrator_config(self.temp_file7)
-        expected = {'p0': ['task1'], 'p1': ['task2'], 'p2': ['task3']}
+        expected = {"p0": ["task1"], "p1": ["task2"], "p2": ["task3"]}
         self.assertEqual(result, expected)
 
     def test_large_config(self):
-        yaml_content = "jobs:\n" + "\n".join([f"""
+        yaml_content = "jobs:\n" + "\n".join(
+            [
+                f"""
   - name: job{i}
     enabled: true
     needs: [job{i-1}]
     run:
-      p0: [task{i}]""" for i in range(1, 1001)])
+      p0: [task{i}]"""
+                for i in range(1, 1001)
+            ]
+        )
         self.temp_file8 = self.create_temp_yaml(yaml_content)
         result = parse_orchestrator_config(self.temp_file8)
-        expected = {'p0': [f'task{i}' for i in range(1, 1001)]}
+        expected = {"p0": [f"task{i}" for i in range(1, 1001)]}
         self.assertEqual(result, expected)
 
-if __name__ == '__main__':
+
+if __name__ == "__main__":
     unittest.main()
