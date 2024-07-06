@@ -11,8 +11,8 @@
   <a href="https://python.org">
     <img src="https://img.shields.io/badge/python-3.7+-blue.svg" alt="Python: 3.7+">
   </a>
-  <a href="https://pypi.org/project/orchestrator">
-    <img src="https://badge.fury.io/py/orchestrator.svg" alt="PyPI version">
+  <a href="https://pypi.org/project/porchestrator">
+    <img src="https://badge.fury.io/py/porchestrator.svg" alt="PyPI version">
   </a>
 </p>
 
@@ -30,7 +30,22 @@ Orchestrator is a Python package that simplifies task orchestrations. It is buil
 
 ## Getting Started
 
-### Installation
+
+## Installation
+
+To install the `Orchestrator` package, you can use pip:
+
+```shell
+pip install porchestrator
+```
+
+Alternatively, you can install it from source by cloning the repository and running the following command:
+
+```shell
+python setup.py install
+```
+
+Make sure you have Python 3.7 or above installed before proceeding with the installation.
 
 
 # Quick Start
