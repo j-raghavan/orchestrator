@@ -1,5 +1,6 @@
 <h1 align="center">
-  <img src="https://raw.githubusercontent.com/j-raghavan/orchestrator/main/assets/orchestrator.png" alt="Orchestrator" width="60" height="50" style="vertical-align: middle;"> Orchestrator </img>
+  <!-- <img src="https://raw.githubusercontent.com/j-raghavan/orchestrator/main/assets/orchestrator.png" alt="Orchestrator" width="60" height="50" style="vertical-align: middle;"> Orchestrator </img> -->
+  <img src="https://github.com/j-raghavan/orchestrator/blob/main/assets/orchestrator.png?raw=True" alt="Orchestrator" width="60" height="50" style="vertical-align: middle;"> Orchestrator </img>
 </h1>
 
 <p align="center">
