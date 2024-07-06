@@ -46,8 +46,13 @@ jobs:
     - name: Build package
       run: poetry build
 
+    - name: Debug Environment
+      run: echo ${{ secrets.PYPI_API_KEY }}
+      env:
+        PYPI_API_KEY: ${{ secrets.PYPI_API_KEY }}
+    
     - name: Publish to PyPI
       env:
-        POETRY_PYPI_TOKEN_PYPI: ${{ secrets.PYPI_API_TOKEN }}
+        POETRY_PYPI_TOKEN_PYPI: ${{ secrets.PYPI_API_KEY }}
       run: |
         poetry publish --skip-existing
