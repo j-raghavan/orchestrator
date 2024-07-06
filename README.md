@@ -1,6 +1,6 @@
 <h1 align="center">
  <a>
-  <img src="https://github.com/j-raghavan/orchestrator/blob/main/assets/orchestrator.png?raw=True" width="60" height="50" alt="Orchestrator" style="vertical-align: middle;"> Orchestrator
+  <img src="https://github.com/j-raghavan/orchestrator/blob/main/assets/orchestrator.png?raw=True" width="60" height="50" alt="Orchestrator" style="vertical-align: middle;"> Orchestrator </img>
   </a>
 </h1>
 
@@ -59,6 +59,6 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 
 
 # Acknowledgments
-Orchestrator is inspired by the excellent work done by the Prefect team. We are grateful for their 
-contributions to the open-source community. Prefect is licensed under the Apache License 2.0. 
+Orchestrator is inspired by the excellent work done by the Prefect team. We are grateful for their
+contributions to the open-source community. Prefect is licensed under the Apache License 2.0.
 The full text of their license can be found [here](https://github.com/PrefectHQ/prefect/blob/eb367aff04cb2f94313ec215909f3595ef3acf09/LICENSE).
