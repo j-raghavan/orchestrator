@@ -85,20 +85,20 @@ class SendGridNotifier(EmailNotifier):
 
     """
 
-    def __init__(self, sender, recipients, subject, body, attachments=None):
-        super().__init__(sender, recipients, subject, body, attachments)
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
         assert os.environ.get("SENDGRID_API_KEY"), "SENDGRID_API_KEY is not set"
         self.logger.debug(
-            f"Initialized SendGrid Notifier with sender: {sender}, "
-            f"recipients: {recipients}, subject: {subject}"
+            f"Initialized SendGrid Notifier with sender: {kwargs.get('sender')}, "
+            f"recipients: {kwargs.get('recipients')}, subject: {kwargs.get('subject')}"
         )
-        self.body = body
-        self.subject = subject
+        self.body = kwargs.get("body")
+        self.subject = kwargs.get("subject")
 
         self.apobj = CustomNotifySendGrid(
             api_key=os.environ.get("SENDGRID_API_KEY"),
-            from_email=sender,
-            to_email=", ".join(recipients),
+            from_email=kwargs.get("sender"),
+            to_email=", ".join(kwargs.get("recipients")),
         )
 
         self.logger.debug("Apprise object initialized")
