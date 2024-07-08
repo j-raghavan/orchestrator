@@ -43,6 +43,7 @@ class SESNotifier(EmailNotifier):
         self.aws_secret_access_key = kwargs.get(
             "aws_secret_access_key", os.environ.get("AWS_SECRET_ACCESS_KEY")
         )
+        self.arn = kwargs.get("arn", os.environ.get("AWS_ROLE_ARN"))
         self.region_name = kwargs.get("region_name", "us-west-2")
         self.from_email = kwargs.get("from_email")
         self.to_email = kwargs.get("to_email")
@@ -69,26 +70,37 @@ class SESNotifier(EmailNotifier):
         )
         return part
 
-    def send(self, body, attachment_path: list = None):
+    def send(self, body, attachment_path=None):
         """
         Send an email notification.
 
         Args:
             body (str): The body of the email.
-            title (str, optional): The title of the email. Defaults to None.
-            attachment_path (str, optional): The path to the file to be attached.
-            Defaults to None.
+            attachment_path (list, optional): The path to the file(s) to be attached.
 
         Returns:
             bool: True if the email was sent successfully, False otherwise.
         """
         try:
-            client = boto3.client(
-                "ses",
-                aws_access_key_id=self.aws_access_key_id,
-                aws_secret_access_key=self.aws_secret_access_key,
-                region_name=self.region_name,
-            )
+            if self.arn:
+                client = boto3.client(
+                    "ses",
+                    region_name=self.region_name,
+                )
+                credentials = {
+                    "SourceArn": self.arn,
+                    "FromArn": self.arn,
+                    "ReturnPathArn": self.arn,
+                }
+            else:
+                client = boto3.client(
+                    "ses",
+                    aws_access_key_id=self.aws_access_key_id,
+                    aws_secret_access_key=self.aws_secret_access_key,
+                    region_name=self.region_name,
+                )
+                credentials = {}
+
             msg = MIMEMultipart()
             msg["From"] = self.from_email
             msg["To"] = self.to_email
@@ -96,14 +108,21 @@ class SESNotifier(EmailNotifier):
             msg.attach(MIMEText(body, "plain"))
 
             if attachment_path:
-                part = self._create_attachment(attachment_path)
-                msg.attach(part)
+                if isinstance(attachment_path, list):
+                    for path in attachment_path:
+                        part = self._create_attachment(path)
+                        msg.attach(part)
+                else:
+                    part = self._create_attachment(attachment_path)
+                    msg.attach(part)
 
             response = client.send_raw_email(
                 Source=self.from_email,
                 Destinations=[self.to_email],
                 RawMessage={"Data": msg.as_string()},
+                **credentials,
             )
+
             if not response:
                 self.logger.error("Failed to send email notification")
                 return False
@@ -115,4 +134,7 @@ class SESNotifier(EmailNotifier):
             return True
         except (BotoCoreError, ClientError, NoCredentialsError) as e:
             self.logger.critical(f"Error sending email notification: {str(e)}")
+            return False
+        except Exception as e:
+            self.logger.critical(f"An unexpected error occurred: {str(e)}")
             return False

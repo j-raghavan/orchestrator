@@ -89,6 +89,48 @@ class TestSESNotifier(unittest.TestCase):
         self.assertIn("Error sending email notification:", call_args[0])
         self.assertIn("An error occurred (500)", call_args[0])
 
+    @patch("boto3.client")
+    def test_send_email_with_arn(self, mock_boto_client):
+        mock_ses_client = MagicMock()
+        mock_boto_client.return_value = mock_ses_client
+
+        notifier = SESNotifier(
+            arn="arn:aws:ses:us-west-2:123456789012:identity/example.com",
+            from_email="sender@example.com",
+            to_email="recipient@example.com",
+            subject="Test Subject",
+            body="Test Body",
+        )
+
+        mock_ses_client.send_raw_email.return_value = {
+            "ResponseMetadata": {"HTTPStatusCode": 200}
+        }
+
+        result = notifier.send("Test Body")
+
+        self.assertTrue(result)
+
+        args, kwargs = mock_ses_client.send_raw_email.call_args
+        self.assertEqual(kwargs["Source"], "sender@example.com")
+        self.assertEqual(kwargs["Destinations"], ["recipient@example.com"])
+        self.assertIn("RawMessage", kwargs)
+        self.assertIn("Data", kwargs["RawMessage"])
+        self.assertIn("From: sender@example.com", kwargs["RawMessage"]["Data"])
+        self.assertIn("To: recipient@example.com", kwargs["RawMessage"]["Data"])
+        self.assertIn("Subject: Test Subject", kwargs["RawMessage"]["Data"])
+        self.assertIn("Test Body", kwargs["RawMessage"]["Data"])
+        self.assertEqual(
+            kwargs["SourceArn"],
+            "arn:aws:ses:us-west-2:123456789012:identity/example.com",
+        )
+        self.assertEqual(
+            kwargs["FromArn"], "arn:aws:ses:us-west-2:123456789012:identity/example.com"
+        )
+        self.assertEqual(
+            kwargs["ReturnPathArn"],
+            "arn:aws:ses:us-west-2:123456789012:identity/example.com",
+        )
+
     def test_create_attachment(self):
         test_dir = os.path.dirname(os.path.abspath(__file__))
         self.attachment_path = os.path.join(test_dir, "test.txt")
