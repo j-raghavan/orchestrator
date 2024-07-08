@@ -80,7 +80,8 @@ class SendGridNotifier(EmailNotifier):
     Attributes:
         body (str): The body of the email.
         subject (str): The subject of the email.
-        apobj (apprise.Apprise): An instance of the Apprise class for sending notifications.
+        apobj (apprise.Apprise): An instance of the Apprise class
+        for sending notifications.
 
     """
 

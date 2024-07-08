@@ -13,8 +13,9 @@ class EmailNotifier(ABC):
         sender (str): The email address of the sender.
         recipients (list): A list of email addresses of the recipients.
         subject (str): The subject of the email.
-        body_template (str): The body template of the email, which can be rendered using Jinja2.
-        attachments (list): A list of file paths for attachments.
+        body_template (str): The body template of the email, which can
+        be rendered using Jinja2. attachments (list): A list of file
+        paths for attachments.
 
     Methods:
         render_body: Renders the body template using Jinja2.
@@ -29,8 +30,9 @@ class EmailNotifier(ABC):
             sender (str): The email address of the sender.
             recipients (list): A list of email addresses of the recipients.
             subject (str): The subject of the email.
-            body_template (str): The body template of the email, which can be rendered using Jinja2.
-            attachments (list, optional): A list of file paths for attachments. Defaults to None.
+            body_template (str): The body template of the email, which can be
+            rendered using Jinja2. attachments (list, optional): A list of file
+            paths for attachments. Defaults to None.
         """
         self.sender = sender
         self.recipients = recipients

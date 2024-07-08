@@ -76,7 +76,8 @@ class SESNotifier(EmailNotifier):
         Args:
             body (str): The body of the email.
             title (str, optional): The title of the email. Defaults to None.
-            attachment_path (str, optional): The path to the file to be attached. Defaults to None.
+            attachment_path (str, optional): The path to the file to be attached.
+            Defaults to None.
 
         Returns:
             bool: True if the email was sent successfully, False otherwise.

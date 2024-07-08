@@ -22,7 +22,8 @@ def register_notifier(name: str) -> Callable[[type], type]:
         class EmailNotifier:
             pass
 
-        The above code registers the `EmailNotifier` class as a notifier with the name "EmailNotifier".
+        The above code registers the `EmailNotifier` class as a
+        notifier with the name "EmailNotifier".
     """
 
     def decorator(cls: type) -> type:
@@ -52,7 +53,8 @@ def get_notifier(name: str) -> type:
         email_notifier = notifier_class()
         email_notifier.send_notification("Hello, world!")
 
-        The above code retrieves the `EmailNotifier` class and creates an instance to send a notification.
+        The above code retrieves the `EmailNotifier` class and creates an
+        instance to send a notification.
     """
     if name not in _notifiers:
         raise ValueError(f"Notifier '{name}' is not registered.")

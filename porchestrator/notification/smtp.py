@@ -19,9 +19,11 @@ class SMTPNotifier(EmailNotifier):
 
     Args:
         smtp_server (str): The SMTP server address.
-        port (int, optional): The port number to connect to the SMTP server. Defaults to 587.
+        port (int, optional): The port number to connect to the SMTP server.
+        Defaults to 587.
         username (str): The username for authentication.
-        password (str, optional): The password for authentication. If not provided, it will be fetched from the environment variable `SMTP_PASSWORD`.
+        password (str, optional): The password for authentication. If not provided,
+        it will be fetched from the environment variable `SMTP_PASSWORD`.
         from_email (str): The email address of the sender.
         to_email (str): The email address of the recipient.
         subject (str): The subject of the email.
@@ -29,9 +31,9 @@ class SMTPNotifier(EmailNotifier):
         attachment_path (str, optional): The path to the attachment file.
 
     Methods:
-        _create_attachment(attachment_path): Creates an attachment object for the given attachment path.
-        send(body, attachment_path): Sends the email with the provided body and attachment (if any).
-
+        _create_attachment(attachment_path): Creates an attachment object for the
+        given attachment path. send(body, attachment_path): Sends the email with
+        the provided body and attachment (if any).
     """
 
     def __init__(self, **kwargs):
