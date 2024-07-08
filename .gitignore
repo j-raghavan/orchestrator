@@ -163,5 +163,6 @@ cython_debug/
 
 # Temporary files
 check.sh
-test.sh 
+test.sh
+test.txt
 test.py
