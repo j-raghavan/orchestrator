@@ -10,6 +10,8 @@ from porchestrator.parser import (
     resolve_tasks,
 )
 
+TEST_DATA = "jobs:\n  - name: job1\n    enabled: true\n    run:\n      p0: [task1]\n"
+
 
 class TestOrchestrator(unittest.TestCase):
 
@@ -66,7 +68,7 @@ class TestOrchestrator(unittest.TestCase):
     @patch(
         "builtins.open",
         new_callable=mock_open,
-        read_data="jobs:\n  - name: job1\n    enabled: true\n    run:\n      p0: [task1]\n",
+        read_data=TEST_DATA,
     )
     @patch("porchestrator.parser.expand_env_vars", side_effect=lambda x: x)
     def test_parse_orchestrator_config(self, mock_expand_env_vars, mock_open):
