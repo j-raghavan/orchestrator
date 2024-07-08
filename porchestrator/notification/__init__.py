@@ -27,7 +27,7 @@ def register_notifier(name: str) -> Callable[[type], type]:
     """
 
     def decorator(cls: type) -> type:
-        if not isinstance(name, type):
+        if not isinstance(cls, type):
             raise TypeError("Only classes can be registered as notifiers.")
         _notifiers[name] = cls
         return cls

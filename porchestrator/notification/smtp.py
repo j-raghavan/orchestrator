@@ -5,8 +5,8 @@ from email.mime.base import MIMEBase
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 
-from . import register_notifier
-from .common import EmailNotifier
+from porchestrator.notification import register_notifier
+from porchestrator.notification.common import EmailNotifier
 
 
 @register_notifier("SMTPNotifier")

@@ -1,7 +1,5 @@
+import logging
 from abc import ABC, abstractmethod
-from email.mime.application import MIMEApplication
-
-from prefect import get_run_logger
 
 
 # Create a common Email class that can be used by all email providers:
@@ -22,7 +20,7 @@ class EmailNotifier(ABC):
         send: Sends the email. This method must be implemented by child classes.
     """
 
-    def __init__(self, sender, recipients, subject, body_template, attachments=None):
+    def __init__(self, **kwargs):
         """
         Initializes an Email object.
 
@@ -34,12 +32,7 @@ class EmailNotifier(ABC):
             rendered using Jinja2. attachments (list, optional): A list of file
             paths for attachments. Defaults to None.
         """
-        self.sender = sender
-        self.recipients = recipients
-        self.subject = subject
-        self.body_template = body_template
-        self.attachments = attachments
-        self.logger = get_run_logger()
+        self.logger = logging.getLogger(__name__)
 
     @abstractmethod
     def send(self):
@@ -49,22 +42,3 @@ class EmailNotifier(ABC):
         This method must be implemented by child classes.
         """
         pass
-
-    def attach_files(self, msg):
-        """
-        Attaches files to the email message.
-
-        Args:
-            msg (MIMEMultipart): The email message object.
-        """
-        if self.attachments:
-            for attachment in self.attachments:
-                with open(attachment, "rb") as file:
-                    part = MIMEApplication(file.read())
-                    part.add_header(
-                        "Content-Disposition", "attachment", filename=attachment
-                    )
-                    msg.attach(part)
-            self.logger.debug(f"Attachments added to the email: {self.attachments}")
-        else:
-            self.logger.debug("No attachments provided for the email.")
