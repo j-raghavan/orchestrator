@@ -37,16 +37,17 @@ class SESNotifier(EmailNotifier):
 
     def __init__(self, **kwargs):
         super(SESNotifier, self).__init__(**kwargs)
-        self.aws_access_key_id = kwargs.get('aws_access_key_id',
-                                            os.environ.get('AWS_ACCESS_KEY_ID'))
-        self.aws_secret_access_key = kwargs.get('aws_secret_access_key',
-                                                os.environ.get('AWS_SECRET_ACCESS_KEY'))
-        self.region_name = kwargs.get('region_name',
-                                      'us-west-2')
-        self.from_email = kwargs.get('from_email')
-        self.to_email = kwargs.get('to_email')
-        self.subject = kwargs.get('subject')
-        self.body = kwargs.get('body')
+        self.aws_access_key_id = kwargs.get(
+            "aws_access_key_id", os.environ.get("AWS_ACCESS_KEY_ID")
+        )
+        self.aws_secret_access_key = kwargs.get(
+            "aws_secret_access_key", os.environ.get("AWS_SECRET_ACCESS_KEY")
+        )
+        self.region_name = kwargs.get("region_name", "us-west-2")
+        self.from_email = kwargs.get("from_email")
+        self.to_email = kwargs.get("to_email")
+        self.subject = kwargs.get("subject")
+        self.body = kwargs.get("body")
 
     def _create_attachment(self, attachment_path):
         """

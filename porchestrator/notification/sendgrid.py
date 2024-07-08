@@ -20,31 +20,31 @@ class CustomNotifySendGrid(apprise.NotifyBase):
     # Subclass of NotifySendGrid to support attachments
     def __init__(self, **kwargs):
         super(CustomNotifySendGrid, self).__init__(**kwargs)
-        self.api_key = kwargs.get('api_key')
-        self.from_email = kwargs.get('from_email')
-        self.to_email = kwargs.get('to_email')
+        self.api_key = kwargs.get("api_key")
+        self.from_email = kwargs.get("from_email")
+        self.to_email = kwargs.get("to_email")
         self.sg = SendGridAPIClient(self.api_key)
 
-    def notify(self, body, title='', attach_paths=None):
+    def notify(self, body, title="", attach_paths=None):
         try:
             message = Mail(
                 from_email=self.from_email,
                 to_emails=self.to_email,
                 subject=title,
-                html_content=body
+                html_content=body,
             )
 
             if attach_paths:
                 for attachment_path in attach_paths:
-                    with open(attachment_path, 'rb') as f:
+                    with open(attachment_path, "rb") as f:
                         file_data = f.read()
                         encoded_file = base64.b64encode(file_data).decode()
 
                     attachment = Attachment(
                         FileContent(encoded_file),
                         FileName(os.path.basename(attachment_path)),
-                        FileType('application/octet-stream'),
-                        Disposition('attachment')
+                        FileType("application/octet-stream"),
+                        Disposition("attachment"),
                     )
                     message.add_attachment(attachment)
 
@@ -60,6 +60,7 @@ class CustomNotifySendGrid(apprise.NotifyBase):
         except Exception as e:
             print(f"EXCEPTION: An error occurred while sending the notification {e}")
             return False
+
 
 @register_notifier("SendGridNotifier")
 class SendGridNotifier(EmailNotifier):
@@ -96,10 +97,10 @@ class SendGridNotifier(EmailNotifier):
         self.apobj = CustomNotifySendGrid(
             api_key=os.environ.get("SENDGRID_API_KEY"),
             from_email=sender,
-            to_email=", ".join(recipients))
+            to_email=", ".join(recipients),
+        )
 
         self.logger.debug("Apprise object initialized")
-
 
     def send(self, attachments: list = None):
         """
@@ -109,9 +110,9 @@ class SendGridNotifier(EmailNotifier):
             Exception: If the notification fails to send.
 
         """
-        success = self.apobj.notify(body=self.body,
-                                    title=self.subject,
-                                    attach_paths=attachments)
+        success = self.apobj.notify(
+            body=self.body, title=self.subject, attach_paths=attachments
+        )
         if not success:
             raise Exception("Failed to send notification")
 

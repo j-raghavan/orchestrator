@@ -36,15 +36,15 @@ class SMTPNotifier(EmailNotifier):
 
     def __init__(self, **kwargs):
         super(SMTPNotifier, self).__init__(**kwargs)
-        self.smtp_server = kwargs.get('smtp_server')
-        self.port = kwargs.get('port', 587)
-        self.username = kwargs.get('username')
-        self.password = kwargs.get('password', os.environ.get('SMTP_PASSWORD'))
-        self.from_email = kwargs.get('from_email')
-        self.to_email = kwargs.get('to_email')
-        self.subject = kwargs.get('subject')
-        self.body = kwargs.get('body')
-        self.attachment_path = kwargs.get('attachment_path')
+        self.smtp_server = kwargs.get("smtp_server")
+        self.port = kwargs.get("port", 587)
+        self.username = kwargs.get("username")
+        self.password = kwargs.get("password", os.environ.get("SMTP_PASSWORD"))
+        self.from_email = kwargs.get("from_email")
+        self.to_email = kwargs.get("to_email")
+        self.subject = kwargs.get("subject")
+        self.body = kwargs.get("body")
+        self.attachment_path = kwargs.get("attachment_path")
 
     def _create_attachment(self, attachment_path):
         """
@@ -57,11 +57,14 @@ class SMTPNotifier(EmailNotifier):
             attachment (MIMEBase): The attachment object.
 
         """
-        attachment = MIMEBase('application', 'octet-stream')
-        with open(attachment_path, 'rb') as file:
+        attachment = MIMEBase("application", "octet-stream")
+        with open(attachment_path, "rb") as file:
             attachment.set_payload(file.read())
         encoders.encode_base64(attachment)
-        attachment.add_header('Content-Disposition', f'attachment; filename={os.path.basename(attachment_path)}')
+        attachment.add_header(
+            "Content-Disposition",
+            f"attachment; filename={os.path.basename(attachment_path)}",
+        )
         return attachment
 
     def send(self, body, attachment_path=None):
@@ -75,10 +78,10 @@ class SMTPNotifier(EmailNotifier):
         """
         try:
             msg = MIMEMultipart()
-            msg['From'] = self.from_email
-            msg['To'] = self.to_email
-            msg['Subject'] = self.subject
-            msg.attach(MIMEText(body, 'plain'))
+            msg["From"] = self.from_email
+            msg["To"] = self.to_email
+            msg["Subject"] = self.subject
+            msg.attach(MIMEText(body, "plain"))
 
             if attachment_path:
                 attachment = self._create_attachment(attachment_path)
@@ -91,7 +94,7 @@ class SMTPNotifier(EmailNotifier):
             server.sendmail(self.from_email, self.to_email, text)
             server.quit()
 
-            self.logger.info(f'Email sent via SMTP to {self.to_email}')
+            self.logger.info(f"Email sent via SMTP to {self.to_email}")
             return True
 
         except smtplib.SMTPException as e:

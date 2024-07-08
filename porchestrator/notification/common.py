@@ -39,7 +39,6 @@ class EmailNotifier(ABC):
         self.attachments = attachments
         self.logger = get_run_logger()
 
-
     @abstractmethod
     def send(self):
         """
