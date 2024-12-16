@@ -22,6 +22,13 @@ jobs:
 
     - name: Install Poetry
       uses: snok/install-poetry@v1
+      with:
+        version: 1.8.2
+
+    - name: Configure Poetry
+      run: |
+        poetry config repositories.github "https://github.com/j-raghavan/orchestrator/releases/download/latest/"
+        poetry config http-basic.github ${{ github.repository_owner }} ${{ secrets.GITHUB_TOKEN }}
 
     - name: Build package
       run: poetry build

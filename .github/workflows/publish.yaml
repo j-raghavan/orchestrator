@@ -1,4 +1,4 @@
-name: Publish Python 🐍 distribution 📦 to PyPI
+name: Publish Python 🐍 distribution 📦 to GitHub Packages
 
 on:
   workflow_run:
@@ -12,6 +12,7 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: write
+      packages: write
       issues: write
       pull-requests: write
     steps:
@@ -34,6 +35,8 @@ jobs:
     - name: Configure Poetry
       run: |
         poetry config virtualenvs.create false
+        poetry config repositories.github https://github.com/j-raghavan/orchestrator/releases/download/latest/
+        poetry config http-basic.github ${{ github.repository_owner }} ${{ secrets.GITHUB_TOKEN }}
 
     - name: Semantic Release
       env:
@@ -46,13 +49,5 @@ jobs:
     - name: Build package
       run: poetry build
 
-    - name: Debug Environment
-      run: echo ${{ secrets.PYPI_API_KEY }}
-      env:
-        PYPI_API_KEY: ${{ secrets.PYPI_API_KEY }}
-
-    - name: Publish to PyPI
-      env:
-        POETRY_PYPI_TOKEN_PYPI: ${{ secrets.PYPI_API_KEY }}
-      run: |
-        poetry publish --skip-existing
+    - name: Publish to GitHub Packages
+      run: poetry publish -r github

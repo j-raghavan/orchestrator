@@ -32,6 +32,12 @@ mkdocs-material = "^9.5.0"
 ruff = "^0.2.1"
 mkdocstrings = {extras = ["python"], version = "^0.24.0"}
 
+
+[[tool.poetry.source]]
+name = "github"
+url = "https://github.com/j-raghavan/orchestrator/releases/download/latest/"
+priority = "primary"
+
 [build-system]
 requires = ["poetry-core>=1.0.0"]
 build-backend = "poetry.core.masonry.api"
