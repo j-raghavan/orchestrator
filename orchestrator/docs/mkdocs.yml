@@ -1,0 +1,39 @@
+site_name: Orchestrator
+theme:
+  name: material
+  features:
+    - navigation.instant
+    - navigation.tracking
+    - navigation.sections
+    - navigation.expand
+    - navigation.indexes
+    - navigation.top
+
+nav:
+  - Home: index.md
+  - Getting Started: guides/getting_started.md
+  - User Guide:
+    - Configuration: guides/configuration.md
+    - Advanced Usage: guides/advanced_usage.md
+  - API Reference:
+    - Core: api/core.md
+    - Models: api/models.md
+    - Storage: api/storage.md
+  - Contributing: contributing.md
+  - Changelog: changelog.md
+
+plugins:
+  - search
+  - mkdocstrings:
+      default_handler: python
+      handlers:
+        python:
+          rendering:
+            show_source: true
+
+markdown_extensions:
+  - pymdownx.highlight
+  - pymdownx.superfences
+  - admonition
+  - toc:
+      permalink: true
