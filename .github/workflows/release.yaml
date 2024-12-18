@@ -46,4 +46,19 @@ jobs:
       - name: Semantic Release
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: semantic-release version --patch
+        run: |
+          semantic-release version --patch
+
+          # Get the new version from pyproject.toml
+          VERSION=$(poetry version -s)
+
+          # Build the package
+          poetry build
+
+          # Create GitHub release and upload assets
+          gh release create "v${VERSION}" \
+            --title "Release v${VERSION}" \
+            --notes "Release v${VERSION}" \
+            "dist/*" \
+            --draft=false \
+            --prerelease=false
