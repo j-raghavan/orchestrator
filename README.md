@@ -74,7 +74,7 @@ Here's a complete example showing task orchestration with different priorities a
 ```python
 from orchestrator import Orchestrator, Task, Pipeline, TaskPriority
 from orchestrator.models.config import OrchestratorConfig
-from orchestrator.models.base import RetryPolicy
+from orchestrator.policies import RetryPolicy
 
 # Configure the orchestrator
 config = OrchestratorConfig(
