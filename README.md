@@ -15,7 +15,7 @@
     <img src="https://img.shields.io/github/v/release/j-raghavan/orchestrator" alt="GitHub release">
   </a>
   <a href="https://github.com/j-raghavan/orchestrator/actions">
-    <img src="https://github.com/j-raghavan/orchestrator/workflows/CI/badge.svg" alt="CI Status">
+    <img src="https://github.com/j-raghavan/orchestrator/workflows/pylint/badge.svg" alt="CI Status">
   </a>
   <a href="https://codecov.io/gh/j-raghavan/orchestrator">
     <img src="https://codecov.io/gh/j-raghavan/orchestrator/branch/main/graph/badge.svg" alt="Code Coverage">
@@ -51,25 +51,13 @@ Orchestrator is a robust Python package for task orchestration, providing a powe
 
 ## Installation
 
-You can install Orchestrator directly from GitHub releases:
+You can install Orchestrator using Poetry:
 
-### Latest Version
 ```bash
-pip install https://github.com/j-raghavan/orchestrator/releases/download/latest/orchestrator-latest-py3-none-any.whl
-```
-
-### Specific Version
-```bash
-pip install https://github.com/j-raghavan/orchestrator/releases/download/v0.1.0/orchestrator-0.1.0-py3-none-any.whl
-```
-
-### Using Poetry
-```bash
+# From GitHub releases
 poetry add https://github.com/j-raghavan/orchestrator/releases/download/latest/orchestrator-latest-py3-none-any.whl
-```
 
-### From Source
-```bash
+# From source
 git clone https://github.com/j-raghavan/orchestrator.git
 cd orchestrator
 poetry install
@@ -77,11 +65,12 @@ poetry install
 
 ## Quick Start
 
-Here's a simple example to get you started:
+Here's a complete example showing task orchestration with different priorities and retry policies:
 
 ```python
-from orchestrator import DiagnosticOrchestrator, Task, Pipeline, TaskPriority
+from orchestrator import Orchestrator, Task, Pipeline, TaskPriority
 from orchestrator.models.config import OrchestratorConfig
+from orchestrator.models.base import RetryPolicy
 
 # Configure the orchestrator
 config = OrchestratorConfig(
@@ -90,34 +79,88 @@ config = OrchestratorConfig(
     enable_circuit_breaker=True
 )
 
-# Create tasks
+# Create tasks with different priorities and retry policies
 task1 = Task(
     name="data_preprocessing",
-    priority=TaskPriority.HIGH,
+    priority=TaskPriority.HIGH
 )
 
 task2 = Task(
-    name="data_analysis",
+    name="flaky_calculation",
     priority=TaskPriority.MEDIUM,
-    dependencies={task1.id}
+    dependencies={task1.id},
+    retry_policy=RetryPolicy(
+        max_attempts=3,
+        delay_seconds=5,
+        exponential_backoff=True
+    )
+)
+
+task3 = Task(
+    name="slow_analysis",
+    priority=TaskPriority.LOW,
+    dependencies={task2.id}
 )
 
 # Create a pipeline
 pipeline = Pipeline(
     name="data_processing",
-    tasks=[task1, task2],
+    tasks=[task1, task2, task3],
     parallel_tasks=2
 )
 
 # Run the pipeline
 async def main():
-    orchestrator = DiagnosticOrchestrator(executor, config)
+    orchestrator = Orchestrator(config)
     await orchestrator.start()
-    pipeline_id = await orchestrator.submit_pipeline(pipeline)
 
-    # Monitor pipeline status
-    status = await orchestrator.get_pipeline_status(pipeline_id)
-    print(f"Pipeline status: {status}")
+    pipeline_id = await orchestrator.submit_pipeline(pipeline)
+    print(f"Starting Pipeline: {pipeline_id}")
+
+    # Monitor pipeline status until completion
+    while True:
+        status = await orchestrator.get_pipeline_status(pipeline_id)
+        if status.is_terminal():
+            break
+        await asyncio.sleep(1)
+
+    # Get execution summary
+    metrics = await orchestrator.get_metrics_report()
+    print(f"Task Metrics:\n{metrics['task_metrics']}")
+
+    await orchestrator.shutdown()
+
+if __name__ == "__main__":
+    asyncio.run(main())
+```
+
+## Example Output
+
+When you run a pipeline, you'll see detailed progress information and metrics:
+
+```
+Starting Pipeline: 0e3b33fa-b23d-4476-b789-4e93e1d7d402
+Pipeline Status: ◐ RUNNING
+◐ Running: 1  ✓ Completed: 0  ✗ Failed: 0  ↻ Retrying: 0  ○ Pending: 2
+
+Task execution summary:
+- data_preprocessing: Status=completed, Duration=1.00s, Attempts=1
+- flaky_calculation: Status=completed, Duration=4.01s, Attempts=2
+- slow_analysis: Status=completed, Duration=6.00s, Attempts=1
+
+Metrics Report
+Task Metrics:
+→ data_preprocessing:
+  Success: 1, Avg Duration: 1.00s
+→ flaky_calculation:
+  Success: 1, Avg Duration: 4.00s
+→ slow_analysis:
+  Success: 1, Avg Duration: 6.00s
+
+System Load:
+CPU: 2.5%
+Memory: 60.3%
+Disk: 0.8%
 ```
 
 ## Configuration
