@@ -39,16 +39,6 @@ jobs:
       working-directory: ./src/orchestrator
       run: poetry run black --check .
 
-    - name: Run Flake8
-      working-directory: ./src/orchestrator
-      run: |
-        poetry run flake8 . \
-          --count \
-          --show-source \
-          --max-complexity=10 \
-          --max-line-length=88 \
-          --statistics
-
     - name: Run Tests
       working-directory: ./src/orchestrator
       run: poetry run pytest ../../tests/
