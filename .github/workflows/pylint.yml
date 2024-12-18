@@ -12,7 +12,7 @@ jobs:
     - uses: actions/checkout@v4
 
     - name: Set up Python ${{ matrix.python-version }}
-      uses: actions/setup-python@v3
+      uses: actions/setup-python@v5
       with:
         python-version: ${{ matrix.python-version }}
 
@@ -27,19 +27,22 @@ jobs:
       id: cached-poetry-dependencies
       uses: actions/cache@v3
       with:
-        path: .venv
-        key: venv-${{ runner.os }}-${{ hashFiles('**/poetry.lock') }}
+        path: src/orchestrator/.venv
+        key: venv-${{ runner.os }}-${{ hashFiles('src/orchestrator/poetry.lock') }}
 
     - name: Install dependencies
+      working-directory: ./src/orchestrator
       run: |
         poetry install --no-interaction
 
     - name: Run Black
-      run: poetry run black --check src/orchestrator tests
+      working-directory: ./src/orchestrator
+      run: poetry run black --check .
 
     - name: Run Flake8
+      working-directory: ./src/orchestrator
       run: |
-        poetry run flake8 src/orchestrator tests \
+        poetry run flake8 . \
           --count \
           --show-source \
           --max-complexity=10 \
@@ -47,4 +50,5 @@ jobs:
           --statistics
 
     - name: Run Tests
-      run: poetry run pytest tests/
+      working-directory: ./src/orchestrator
+      run: poetry run pytest ../../tests/
