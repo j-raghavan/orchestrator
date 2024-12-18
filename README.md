@@ -15,7 +15,7 @@
     <img src="https://img.shields.io/github/v/release/j-raghavan/orchestrator" alt="GitHub release">
   </a>
   <a href="https://github.com/j-raghavan/orchestrator/actions">
-    <img src="https://github.com/j-raghavan/orchestrator/workflows/pylint/badge.svg" alt="CI Status">
+    <img src="https://github.com/j-raghavan/orchestrator/workflows/CI/badge.svg" alt="CI Status">
   </a>
   <a href="https://codecov.io/gh/j-raghavan/orchestrator">
     <img src="https://codecov.io/gh/j-raghavan/orchestrator/branch/main/graph/badge.svg" alt="Code Coverage">
