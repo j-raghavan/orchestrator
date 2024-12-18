@@ -2,7 +2,7 @@
 name = "orchestrator"
 version = "0.1.0"
 description = "A robust task orchestration framework with support for parallel execution, retry policies, and monitoring"
-authors = ["Your Name <your.email@example.com>"]
+authors = ["Jayasimha Raghavan (j-raghavan)"]
 license = "MIT"
 readme = "README.md"
 packages = [
@@ -36,3 +36,10 @@ mkdocstrings = {extras = ["python"], version = "^0.24.0"}
 [build-system]
 requires = ["poetry-core>=1.0.0"]
 build-backend = "poetry.core.masonry.api"
+
+[tool.semantic_release]
+version_variable = ["src/orchestrator/__init__.py:__version__"]
+branch = "main"
+upload_to_pypi = false
+upload_to_repository = true
+build_command = "poetry build"

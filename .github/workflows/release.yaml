@@ -24,13 +24,17 @@ jobs:
       uses: snok/install-poetry@v1
       with:
         version: 1.8.2
+        virtualenvs-create: true
+        virtualenvs-in-project: true
 
     - name: Configure Poetry
+      working-directory: ./src/orchestrator
       run: |
         poetry config repositories.github "https://github.com/j-raghavan/orchestrator/releases/download/latest/"
         poetry config http-basic.github ${{ github.repository_owner }} ${{ secrets.GITHUB_TOKEN }}
 
     - name: Build package
+      working-directory: ./src/orchestrator
       run: poetry build
 
     - name: Create Release
@@ -38,8 +42,8 @@ jobs:
       uses: softprops/action-gh-release@v1
       with:
         files: |
-          dist/*.whl
-          dist/*.tar.gz
+          src/orchestrator/dist/*.whl
+          src/orchestrator/dist/*.tar.gz
         draft: false
         prerelease: false
         generate_release_notes: true
