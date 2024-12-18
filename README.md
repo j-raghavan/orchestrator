@@ -55,7 +55,11 @@ You can install Orchestrator using Poetry:
 
 ```bash
 # From GitHub releases
-poetry add https://github.com/j-raghavan/orchestrator/releases/download/latest/orchestrator-latest-py3-none-any.whl
+# Latest version
+poetry add git+https://github.com/j-raghavan/orchestrator.git
+
+# Specific version
+poetry add git+https://github.com/j-raghavan/orchestrator.git@v0.1.8
 
 # From source
 git clone https://github.com/j-raghavan/orchestrator.git
