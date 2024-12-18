@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "orchestrator"
-version = "0.1.0"
+version = "0.1.8"
 description = "A robust task orchestration framework with support for parallel execution, retry policies, and monitoring"
 authors = ["Jayasimha Raghavan (j-raghavan)"]
 license = "MIT"
