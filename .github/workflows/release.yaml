@@ -34,6 +34,7 @@ jobs:
       - name: Install Dependencies
         run: |
           poetry install --no-interaction
+          pip install python-semantic-release structlog
 
       - name: Configure Git
         run: |
@@ -44,5 +45,5 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          pip install python-semantic-release
+          poetry run pip install structlog
           poetry run semantic-release version --patch
