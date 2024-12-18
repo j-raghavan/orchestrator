@@ -36,7 +36,7 @@ jobs:
           poetry config virtualenvs.create false
           poetry install --no-interaction --with dev
           pip install 'python-semantic-release[build,dev,docs,mypy,test]'
-          pip install --no-deps structlog gitpython gitdb gitlab click tomlkit dotty_dict packaging requests semver rich wheel smmap typing-extensions urllib3 certifi idna charset-normalizer
+          pip install --no-deps structlog gitpython gitdb click tomlkit dotty_dict packaging requests semver rich wheel smmap typing-extensions urllib3 certifi idna charset-normalizer
 
       - name: Configure Git
         run: |
