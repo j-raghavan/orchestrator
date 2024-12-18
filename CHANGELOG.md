@@ -1,6 +1,9 @@
 # CHANGELOG
 
 
+## v0.1.7 (2024-12-18)
+
+
 ## v0.1.6 (2024-12-18)
 
 ### Bug Fixes
@@ -25,6 +28,9 @@
 
 - Poetry lock update
   ([`1d94f9f`](https://github.com/j-raghavan/orchestrator/commit/1d94f9ff015b3dd9837add06a2f2cd1e1d9ace7a))
+
+- Publishing to github
+  ([`8100c07`](https://github.com/j-raghavan/orchestrator/commit/8100c0778049b9983ed864f1c8485c52b50886c9))
 
 
 ## v0.1.5 (2024-12-18)
