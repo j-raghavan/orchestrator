@@ -47,18 +47,25 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          semantic-release version --patch
+          # Get the new version
+            VERSION=$(semantic-release version --patch --print)
+            echo "New version: $VERSION"
 
-          # Get the new version from pyproject.toml
-          VERSION=$(poetry version -s)
+            # Update Poetry version
+            poetry version $VERSION
 
-          # Build the package
-          poetry build
+            # Build the package
+            poetry build
 
-          # Create GitHub release and upload assets
-          gh release create "v${VERSION}" \
-            --title "Release v${VERSION}" \
-            --notes "Release v${VERSION}" \
-            "dist/*" \
-            --draft=false \
-            --prerelease=false
+            # Commit the version changes
+            git add pyproject.toml
+            git commit -m "chore(release): bumping version to v${VERSION}"
+            git push
+
+            # Create GitHub release
+            gh release create "v${VERSION}" \
+              --title "Release v${VERSION}" \
+              --notes "Release v${VERSION}" \
+              dist/* \
+              --draft=false \
+              --prerelease=false
